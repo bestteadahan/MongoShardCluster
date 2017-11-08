@@ -1,0 +1,52 @@
+version: "2"
+services:
+  sd1:
+    image: mongo
+    container_name: sd1
+    user: mongodb
+    ports:
+      - "20000:27018"
+    command: mongod --config /data/scripts/mongod_sd1.conf --smallfiles
+    restart: on-failure
+    volumes:
+      - ..:/data
+  sd2:
+    image: mongo
+    container_name: sd2
+    user: mongodb
+    ports:
+      - "20001:27018"
+    command: mongod --config /data/scripts/mongod_sd2.conf --smallfiles
+    restart: on-failure
+    volumes:
+      - ..:/data
+  sd3:
+    image: mongo
+    container_name: sd3
+    user: mongodb
+    ports:
+      - "20002:27018"
+    command: mongod --config /data/scripts/mongod_sd3.conf --smallfiles
+    restart: on-failure
+    volumes:
+      - ..:/data
+  config:
+    image: mongo
+    container_name: configsvr
+    user: mongodb
+    ports:
+      - "20003:27019"
+    command: mongod --config /data/scripts/mongod_config.conf --smallfiles
+    restart: on-failure
+    volumes:
+      - ..:/data
+  router:
+    image: mongo
+    container_name: router
+    user: mongodb
+    ports:
+      - "20004:40000"
+    command: mongos --config /data/scripts/mongos.conf
+    restart: on-failure
+    volumes:
+      - ..:/data
